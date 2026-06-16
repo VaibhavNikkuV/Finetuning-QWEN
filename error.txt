@@ -1,0 +1,218 @@
+(Finetuning) (base) drishti@DESKTOP-VKRMBR2:/mnt/e/FinetuningQwen/Finetuning$ accelerate launch --num_processes 4 src/train_qwen_edit_lora/train_qwen_edit_lora.py
+INFO:__main__:Loading base pipeline...
+INFO:httpx:HTTP Request: GET https://huggingface.co/api/models/toandev/Qwen-Image-Edit-2511-4bit/revision/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4 "HTTP/1.1 200 OK"
+INFO:__main__:Loading base pipeline...
+INFO:httpx:HTTP Request: GET https://huggingface.co/api/models/toandev/Qwen-Image-Edit-2511-4bit/revision/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4 "HTTP/1.1 200 OK"
+Loading pipeline components...:   0%|                                                             | 0/6 [00:00<?, ?it/sINFO:__main__:Loading base pipeline...                                                             | 0/2 [00:00<?, ?it/s]
+INFO:httpx:HTTP Request: GET https://huggingface.co/api/models/toandev/Qwen-Image-Edit-2511-4bit/revision/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4 "HTTP/1.1 200 OK"
+                                                                                                                       INFO:__main__:Loading base pipeline...███████████████████████▌                            | 1/2 [01:45<01:45, 105.65s/it]
+INFO:httpx:HTTP Request: GET https://huggingface.co/api/models/toandev/Qwen-Image-Edit-2511-4bit/revision/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4 "HTTP/1.1 200 OK"
+Loading checkpoint shards: 100%|██████████████████████████████████████████████████████████| 2/2 [01:52<00:00, 56.09s/it]
+Loading weights:  97%|████████████████████████████████████████████████████████████▊  | 703/728 [00:22<00:00, 143.73it/s]
+Loading weights: 100%|████████████████████████████████████████████████████████████████| 728/728 [00:21<00:00, 33.72it/s]
+Loading weights: 100%|████████████████████████████████████████████████████████████████| 728/728 [00:20<00:00, 35.72it/s]
+Loading weights: 100%|████████████████████████████████████████████████████████████████| 728/728 [00:22<00:00, 32.14it/s]
+[transformers] Qwen2_5_VLForConditionalGeneration LOAD REPORT from: /home/drishti/.cache/huggingface/hub/models--toandev--Qwen-Image-Edit-2511-4bit/snapshots/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4/text_encoder
+Key            | Status  |
+---------------+---------+-
+lm_head.weight | MISSING |
+
+Notes:
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Qwen2_5_VLForConditionalGeneration LOAD REPORT from: /home/drishti/.cache/huggingface/hub/models--toandev--Qwen-Image-Edit-2511-4bit/snapshots/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4/text_encoder
+Key            | Status  |
+---------------+---------+-
+lm_head.weight | MISSING |
+
+Notes:
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Qwen2_5_VLForConditionalGeneration LOAD REPORT from: /home/drishti/.cache/huggingface/hub/models--toandev--Qwen-Image-Edit-2511-4bit/snapshots/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4/text_encoder
+Key            | Status  |
+---------------+---------+-
+lm_head.weight | MISSING |
+
+Notes:
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Qwen2_5_VLForConditionalGeneration LOAD REPORT from: /home/drishti/.cache/huggingface/hub/models--toandev--Qwen-Image-Edit-2511-4bit/snapshots/bbf3075e1aee61f91027fa212c9a3a03cd5dc7c4/text_encoder
+Key            | Status  |
+---------------+---------+-
+lm_head.weight | MISSING |
+
+Notes:
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Loading pipeline components...:  67%|███████████████████████████████████▎                 | 4/6 [02:29<00:56, 28.21s/it]You are loading your model in 8bit or 4bit but no linear modules were found in your model. Please double check your model architecture, or submit an issue on github if you think this is a bug.
+Loading pipeline components...: 100%|█████████████████████████████████████████████████████| 6/6 [02:32<00:00, 25.34s/it]
+trainable params: 47,185,920 || all params: 20,477,587,008 || trainable%: 0.2304
+INFO:__main__:Found 133 samples
+trainable params: 47,185,920 || all params: 20,477,587,008 || trainable%: 0.2304
+INFO:__main__:Found 133 samples
+trainable params: 47,185,920 || all params: 20,477,587,008 || trainable%: 0.2304
+INFO:__main__:Found 133 samples
+trainable params: 47,185,920 || all params: 20,477,587,008 || trainable%: 0.2304
+INFO:__main__:Found 133 samples
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 1026, in <module>
+[rank3]:     train(args)
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 875, in train
+[rank3]:     transformer, optimizer, dataloader, lr_scheduler = accelerator.prepare(
+[rank3]:                                                        ^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1556, in prepare
+[rank3]:     result = tuple(
+[rank3]:              ^^^^^^
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1557, in <genexpr>
+[rank3]:     self._prepare_one(obj, first_pass=True, device_placement=d) for obj, d in zip(args, device_placement)
+[rank3]:     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1402, in _prepare_one
+[rank3]:     return self.prepare_model(obj, device_placement=device_placement)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1881, in prepare_model
+[rank3]:     model = torch.nn.parallel.DistributedDataParallel(
+[rank3]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 862, in __init__
+[rank3]:     _verify_param_shape_across_processes(self.process_group, parameters)
+[rank3]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/utils.py", line 286, in _verify_param_shape_across_processes
+[rank3]:     return dist._verify_params_across_processes(process_group, tensors, logger)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]: torch.distributed.DistBackendError: NCCL error in: /pytorch/torch/csrc/distributed/c10d/NCCLUtils.cpp:93, unhandled cuda error (run with NCCL_DEBUG=INFO for details), NCCL version 2.28.9
+[rank3]: ncclUnhandledCudaError: Call to CUDA function failed.
+[rank3]: Last error:
+[rank3]: Cuda failure 999 'unknown error'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 1026, in <module>
+[rank0]:     train(args)
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 875, in train
+[rank0]:     transformer, optimizer, dataloader, lr_scheduler = accelerator.prepare(
+[rank0]:                                                        ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1556, in prepare
+[rank0]:     result = tuple(
+[rank0]:              ^^^^^^
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1557, in <genexpr>
+[rank0]:     self._prepare_one(obj, first_pass=True, device_placement=d) for obj, d in zip(args, device_placement)
+[rank0]:     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1402, in _prepare_one
+[rank0]:     return self.prepare_model(obj, device_placement=device_placement)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1881, in prepare_model
+[rank0]:     model = torch.nn.parallel.DistributedDataParallel(
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 862, in __init__
+[rank0]:     _verify_param_shape_across_processes(self.process_group, parameters)
+[rank0]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/utils.py", line 286, in _verify_param_shape_across_processes
+[rank0]:     return dist._verify_params_across_processes(process_group, tensors, logger)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: torch.distributed.DistBackendError: NCCL error in: /pytorch/torch/csrc/distributed/c10d/NCCLUtils.cpp:93, unhandled cuda error (run with NCCL_DEBUG=INFO for details), NCCL version 2.28.9
+[rank0]: ncclUnhandledCudaError: Call to CUDA function failed.
+[rank0]: Last error:
+[rank0]: Cuda failure 999 'unknown error'
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 1026, in <module>
+[rank2]:     train(args)
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 875, in train
+[rank2]:     transformer, optimizer, dataloader, lr_scheduler = accelerator.prepare(
+[rank2]:                                                        ^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1556, in prepare
+[rank2]:     result = tuple(
+[rank2]:              ^^^^^^
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1557, in <genexpr>
+[rank2]:     self._prepare_one(obj, first_pass=True, device_placement=d) for obj, d in zip(args, device_placement)
+[rank2]:     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1402, in _prepare_one
+[rank2]:     return self.prepare_model(obj, device_placement=device_placement)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1881, in prepare_model
+[rank2]:     model = torch.nn.parallel.DistributedDataParallel(
+[rank2]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 862, in __init__
+[rank2]:     _verify_param_shape_across_processes(self.process_group, parameters)
+[rank2]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/utils.py", line 286, in _verify_param_shape_across_processes
+[rank2]:     return dist._verify_params_across_processes(process_group, tensors, logger)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]: torch.distributed.DistBackendError: NCCL error in: /pytorch/torch/csrc/distributed/c10d/NCCLUtils.cpp:93, unhandled cuda error (run with NCCL_DEBUG=INFO for details), NCCL version 2.28.9
+[rank2]: ncclUnhandledCudaError: Call to CUDA function failed.
+[rank2]: Last error:
+[rank2]: Cuda failure 999 'unknown error'
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 1026, in <module>
+[rank1]:     train(args)
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/src/train_qwen_edit_lora/train_qwen_edit_lora.py", line 875, in train
+[rank1]:     transformer, optimizer, dataloader, lr_scheduler = accelerator.prepare(
+[rank1]:                                                        ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1556, in prepare
+[rank1]:     result = tuple(
+[rank1]:              ^^^^^^
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1557, in <genexpr>
+[rank1]:     self._prepare_one(obj, first_pass=True, device_placement=d) for obj, d in zip(args, device_placement)
+[rank1]:     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1402, in _prepare_one
+[rank1]:     return self.prepare_model(obj, device_placement=device_placement)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/accelerator.py", line 1881, in prepare_model
+[rank1]:     model = torch.nn.parallel.DistributedDataParallel(
+[rank1]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 862, in __init__
+[rank1]:     _verify_param_shape_across_processes(self.process_group, parameters)
+[rank1]:   File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/utils.py", line 286, in _verify_param_shape_across_processes
+[rank1]:     return dist._verify_params_across_processes(process_group, tensors, logger)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: torch.distributed.DistBackendError: NCCL error in: /pytorch/torch/csrc/distributed/c10d/NCCLUtils.cpp:93, unhandled cuda error (run with NCCL_DEBUG=INFO for details), NCCL version 2.28.9
+[rank1]: ncclUnhandledCudaError: Call to CUDA function failed.
+[rank1]: Last error:
+[rank1]: Cuda failure 999 'unknown error'
+[rank0]:[W429 06:21:47.005908462 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0429 06:21:54.024000 172424 torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 172782 closing signal SIGTERM
+W0429 06:21:54.055000 172424 torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 172783 closing signal SIGTERM
+W0429 06:21:54.083000 172424 torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 172784 closing signal SIGTERM
+E0429 06:22:16.675000 172424 torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: 1) local_rank: 0 (pid: 172781) of binary: /mnt/e/FinetuningQwen/Finetuning/.venv/bin/python3
+Traceback (most recent call last):
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/bin/accelerate", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1396, in launch_command
+    multi_gpu_launcher(args)
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1023, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/FinetuningQwen/Finetuning/.venv/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError:
+============================================================
+src/train_qwen_edit_lora/train_qwen_edit_lora.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-04-29_06:22:16
+  host      : DESKTOP-VKRMBR2.localdomain
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 172782)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2026-04-29_06:22:16
+  host      : DESKTOP-VKRMBR2.localdomain
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 172783)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2026-04-29_06:22:16
+  host      : DESKTOP-VKRMBR2.localdomain
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 172784)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-04-29_06:21:54
+  host      : DESKTOP-VKRMBR2.localdomain
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 172781)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

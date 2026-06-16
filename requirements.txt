@@ -1,0 +1,75 @@
+# =============================================================================
+# Qwen-Image-Edit-2511 LoRA Fine-Tuning — Windows Requirements
+# =============================================================================
+# Tested with: Python 3.11, CUDA 12.4, NVIDIA driver R570+, Windows 11
+# Last verified: 2026-04
+#
+# INSTALL ORDER (do not run `pip install -r` directly — torch needs its index):
+#
+#   1. Create venv:
+#        py -3.11 -m venv .venv-win
+#        .\.venv-win\Scripts\Activate.ps1
+#
+#   2. Upgrade pip toolchain:
+#        python -m pip install --upgrade pip wheel setuptools
+#
+#   3. Install PyTorch (REQUIRES the CUDA index URL):
+#        pip install -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cu124
+#
+#   4. Install the rest from this file:
+#        pip install -r requirements-windows.txt
+#
+#   5. Install DiffSynth-Studio in editable mode (separate clone, see plan):
+#        pip install -e ..\DiffSynth-Studio
+#
+# =============================================================================
+# WHY THESE VERSIONS ARE PINNED EXACTLY
+# =============================================================================
+# transformers 4.45.2  — last version that loads Qwen-Image-Edit-2511 cleanly
+#                        without requiring main-branch features
+# diffusers 0.31.0     — first version with QwenImageEditPlusPipeline support
+# peft 0.13.0          — works with transformers 4.45.x; 0.14+ breaks lora_target_modules
+# accelerate 0.34.2    — stable on Windows; 1.0+ has untested Windows changes
+# huggingface_hub 0.25 — matches transformers 4.45 expectations
+#
+# DO NOT upgrade these without running the full pilot (Phase 5 of migration plan).
+# =============================================================================
+
+# Core training stack
+transformers==4.45.2
+diffusers==0.31.0
+peft==0.13.0
+accelerate==0.34.2
+safetensors==0.4.5
+huggingface_hub==0.25.2
+
+# Tokenization and text processing
+sentencepiece==0.2.0
+tokenizers==0.20.3
+protobuf==4.25.5
+
+# Image and numerical
+Pillow==10.4.0
+numpy==1.26.4
+einops==0.8.0
+
+# Data loading
+pandas==2.2.3
+
+# Progress and logging
+tqdm==4.66.5
+
+# Optional: experiment tracking (uncomment if you use it)
+# wandb==0.18.5
+# tensorboard==2.18.0
+
+# =============================================================================
+# DELIBERATELY EXCLUDED ON WINDOWS — see MIGRATION_NOTES.md for rationale
+# =============================================================================
+# bitsandbytes      — 4-bit quantization unreliable on Windows
+# triton            — no official Windows support
+# flash-attn        — broken/unmaintained Windows builds
+# xformers          — Windows builds frequently mismatch torch versions
+# deepspeed         — Windows port is fragile, not worth the multi-GPU gain
+# vllm              — Linux-only
+# =============================================================================

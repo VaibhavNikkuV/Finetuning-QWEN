@@ -1,0 +1,45 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.venv-win/
+# Added by code-review-graph
+.code-review-graph/
+.claude/
+CLAUDE.md
+.mcp.json
+
+# Hugging Face / model caches
+hf_cache/
+.cache/
+
+# Training outputs
+lora_output/
+smoke_output/
+logs/
+
+# Model weights (never commit binary weights)
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Datasets (PII — never commit)
+qwen_edit_dataset/
+qwen_edit_dataset_smoke/
+DatasetRAW/
+dataset/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+secrets/
