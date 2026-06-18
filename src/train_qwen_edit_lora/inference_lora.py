@@ -100,16 +100,35 @@
 
 #!/usr/bin/env python3
 import argparse
+import os
 import torch
 from PIL import Image
+from peft import PeftModel
 from diffusers import QwenImageEditPlusPipeline
 
 def load_pipeline(lora_path, device="cuda"):
+    if not os.path.isdir(lora_path):
+        raise FileNotFoundError(
+            f"LoRA directory not found: {lora_path}\n"
+            "Pass --lora_path the folder that contains adapter_config.json and "
+            "adapter_model.safetensors (e.g. .../lora_output/final)."
+        )
+    if not os.path.isfile(os.path.join(lora_path, "adapter_config.json")):
+        raise FileNotFoundError(
+            f"{lora_path} has no adapter_config.json -- it is not a PEFT adapter dir."
+        )
+
     pipe = QwenImageEditPlusPipeline.from_pretrained(
         "Qwen/Qwen-Image-Edit-2511",
         torch_dtype=torch.bfloat16,
     )
-    pipe.load_lora_weights(lora_path)
+
+    # Training saved the LoRA with PEFT (get_peft_model + save_pretrained), so
+    # load it back through PEFT rather than diffusers' load_lora_weights, which
+    # expects diffusers-format pytorch_lora_weights.safetensors.
+    pipe.transformer = PeftModel.from_pretrained(pipe.transformer, lora_path)
+    pipe.transformer = pipe.transformer.merge_and_unload()
+
     pipe.to(device)
     pipe.set_progress_bar_config(disable=None)
     return pipe
@@ -142,6 +161,12 @@ if __name__ == "__main__":
     parser.add_argument("--cfg", type=float, default=4.0)
     args = parser.parse_args()
 
+    # Allow --prompt to be either literal text or a path to a .txt caption file.
+    prompt = args.prompt
+    if os.path.isfile(prompt):
+        with open(prompt, "r", encoding="utf-8") as f:
+            prompt = f.read().strip()
+
     pipeline = load_pipeline(args.lora_path)
-    run_inference(pipeline, args.input_image, args.prompt, args.output,
+    run_inference(pipeline, args.input_image, prompt, args.output,
                   args.seed, args.steps, args.cfg)
