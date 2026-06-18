@@ -106,7 +106,10 @@ from PIL import Image
 from peft import PeftModel
 from diffusers import QwenImageEditPlusPipeline
 
-def load_pipeline(lora_path, device="cuda"):
+MODEL_ID = "Qwen/Qwen-Image-Edit-2511"
+
+
+def _check_adapter_dir(lora_path):
     if not os.path.isdir(lora_path):
         raise FileNotFoundError(
             f"LoRA directory not found: {lora_path}\n"
@@ -118,18 +121,48 @@ def load_pipeline(lora_path, device="cuda"):
             f"{lora_path} has no adapter_config.json -- it is not a PEFT adapter dir."
         )
 
-    pipe = QwenImageEditPlusPipeline.from_pretrained(
-        "Qwen/Qwen-Image-Edit-2511",
-        torch_dtype=torch.bfloat16,
-    )
 
-    # Training saved the LoRA with PEFT (get_peft_model + save_pretrained), so
-    # load it back through PEFT rather than diffusers' load_lora_weights, which
-    # expects diffusers-format pytorch_lora_weights.safetensors.
-    pipe.transformer = PeftModel.from_pretrained(pipe.transformer, lora_path)
-    pipe.transformer = pipe.transformer.merge_and_unload()
+def load_pipeline(lora_path, device="cuda", quant="4bit"):
+    _check_adapter_dir(lora_path)
 
-    pipe.to(device)
+    if quant == "4bit":
+        # The bf16 transformer (~40GB) does not fit in 24GB VRAM; on WSL it spills
+        # into system RAM and crawls. Load it in 4-bit (NF4) so it fits in VRAM, and
+        # offload the text encoder / VAE to CPU between calls.
+        from diffusers import QwenImageTransformer2DModel
+        from diffusers import BitsAndBytesConfig as DiffusersBnbConfig
+
+        bnb = DiffusersBnbConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+        )
+        transformer = QwenImageTransformer2DModel.from_pretrained(
+            MODEL_ID,
+            subfolder="transformer",
+            quantization_config=bnb,
+            torch_dtype=torch.bfloat16,
+        )
+        pipe = QwenImageEditPlusPipeline.from_pretrained(
+            MODEL_ID,
+            transformer=transformer,
+            torch_dtype=torch.bfloat16,
+        )
+        # Attach the trained LoRA on top of the 4-bit transformer (QLoRA-style).
+        # Do NOT merge_and_unload(): you cannot merge a LoRA into 4-bit weights.
+        pipe.transformer = PeftModel.from_pretrained(pipe.transformer, lora_path)
+        # Offload manages device placement -- do NOT call pipe.to(device) after this.
+        pipe.enable_model_cpu_offload()
+    else:
+        # Full-precision path -- needs ~48GB+ VRAM. Merge the LoRA for fastest inference.
+        pipe = QwenImageEditPlusPipeline.from_pretrained(
+            MODEL_ID,
+            torch_dtype=torch.bfloat16,
+        )
+        pipe.transformer = PeftModel.from_pretrained(pipe.transformer, lora_path)
+        pipe.transformer = pipe.transformer.merge_and_unload()
+        pipe.to(device)
+
     pipe.set_progress_bar_config(disable=None)
     return pipe
 
@@ -157,8 +190,10 @@ if __name__ == "__main__":
     parser.add_argument("--prompt", required=True)
     parser.add_argument("--output", default="edited.png")
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--steps", type=int, default=40)
+    parser.add_argument("--steps", type=int, default=24)
     parser.add_argument("--cfg", type=float, default=4.0)
+    parser.add_argument("--quant", choices=["4bit", "none"], default="4bit",
+                        help="4bit fits ~24GB VRAM (default); 'none' needs ~48GB+.")
     args = parser.parse_args()
 
     # Allow --prompt to be either literal text or a path to a .txt caption file.
@@ -167,6 +202,6 @@ if __name__ == "__main__":
         with open(prompt, "r", encoding="utf-8") as f:
             prompt = f.read().strip()
 
-    pipeline = load_pipeline(args.lora_path)
+    pipeline = load_pipeline(args.lora_path, quant=args.quant)
     run_inference(pipeline, args.input_image, prompt, args.output,
                   args.seed, args.steps, args.cfg)
